@@ -1,0 +1,90 @@
+#eureka:
+  #client:
+    #fetch-registry: true
+    #register-with-eureka: true
+    #healthcheck:
+      #enabled: true
+    #serviceUrl:
+      #defaultZone: https://eureka-disc-service.herokuapp.com/eureka
+
+server:
+  port: 8086
+spring:
+  application:
+    name: zuul-gateway
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+ribbon:
+  ReadTimeout: 125000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 130000
+#eureka:
+#  instance:
+#    hostname: localhost
+#    port: 8761
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
+#    instance:
+#      preferIpAddress: true
+
+
+zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
+  ribbon:
+    eager-load:
+      enabled: true
+  routes:
+    nooble-security:
+      sensitiveHeaders:
+      path: /oauth/**
+      stripPrefix: false
+      url: https://ensaspay-oauth-service.herokuapp.com
+    morningservice:
+      sensitiveHeaders:
+      path: /morning/**
+      stripPrefix: false
+      serviceId: good-morning
+    clientservice:
+      sensitiveHeaders:
+      path: /api/client/**
+      stripPrefix: false
+      url: https://ensaspay-client-service.herokuapp.com
+    accountservice:
+      sensitiveHeaders:
+      path: /api/account/**
+      stripPrefix: false
+      url: https://ensaspay-account-service.herokuapp.com
+    cmiservice:
+      sensitiveHeaders:
+      path: /soapWS/**
+      stripPrefix: false
+      url: https://ensapay-cmi-service.herokuapp.com
+    iamfakeservice:
+      sensitiveHeaders:
+      path: /iam/**
+      stripPrefix: false
+      url: https://ensapay-iamfakeservice.herokuapp.com
+    agentservice:
+      sensitiveHeaders:
+      path: /agent/**
+      stripPrefix: false
+      url: https://ensapay-agent-service.herokuapp.com
+    agencyservice:
+      sensitiveHeaders:
+      path: /agency/**
+      stripPrefix: false
+      url: https://ensapay-agent-service.herokuapp.com
+
